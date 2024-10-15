@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversión IEEE 754</title>
+    <style>
+        body {
+            background-color: papayawhip;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el contenido */
+            justify-content: center; /* Centra el contenido */
+            height: 100vh; /* Ocupa toda la altura de la ventana */
+            margin: 0; /* Elimina márgenes */
+        }
+        #resultado {
+            margin-top: 20px; /* Espacio superior para el resultado */
+            padding: 10px; /* Espaciado interno */
+            border: 1px solid #ccc; /* Borde de la caja */
+            background-color: white; /* Fondo blanco para la caja */
+            width: 300px; /* Ancho de la caja */
+            text-align: center; /* Centra el texto en la caja */
+        }
+    </style>
+</head>
+<body>
+    <h1>Representación interna de números de Punto Flotante</h1>
+    <div>
+        <p>Ingrese un número real:</p>
+        <input type="number" step="any" id="floatNumber">
+        <input type="button" value="Convertir" onclick="convertirFlotante()" style="background-color: green; color: black;">
+    </div>
+
+    <p>Representación en formato IEEE 754</p>
+    
+    <div id="resultado"></div> <!-- Aquí se mostrará el resultado -->
+
+    <script>
+        function convertirFlotante() {
+            const floatNumber = parseFloat(document.getElementById("floatNumber").value);
+            const buffer = new ArrayBuffer(4);
+            const floatView = new Float32Array(buffer);
+            floatView[0] = floatNumber;
+
+            const uintView = new Uint32Array(buffer);
+            const binaryString = uintView[0].toString(2).padStart(32, '0');
+
+            const sign = binaryString.charAt(0);
+            const exponent = binaryString.slice(1, 9);
+            const mantissa = binaryString.slice(9);
+
+            // Muestra el resultado en la caja
+            document.getElementById("resultado").innerText = `${binaryString}`;
+        }
+    </script>
+</body>
+</html>
